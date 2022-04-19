@@ -16,11 +16,12 @@ mpl.rcParams['font.serif'] = ['KaiTi']
 mpl.rcParams['axes.unicode_minus'] = False
 import matplotlib.pyplot as plt
 
+# 文件名称
+fileName = f'基金排行{time.strftime("%Y%m%d", time.localtime())}.txt'
+
 
 # 获取所有基金数据
 def getFundData():
-    # 文件名称
-    fileName = f'基金排行{time.strftime("%Y%m%d", time.localtime())}.txt'
     # 存放所有的数据
     allData = []
     pi = 1
@@ -79,14 +80,12 @@ def recommendFund():
     del df["日增长率"]
     del df["近3年"]
     del df["近2年"]
+    del df["近1周"]
     # 将空白值替换为缺失值
     df.replace(to_replace=r'^\s*$', value=np.nan, regex=True, inplace=True)
-    # 填充数据（因为某些新生基金近1年、近2年为空，所以用其他列去填充）
-    df['近1年'].fillna(df['近6月'], inplace=True)
     # 去除缺失值
-    df = df.dropna(subset=['日期', '近1月', '近1周', '近3月', '近6月'])
+    df = df.dropna(subset=['日期', '近1月', '近3月', '近6月', '近1年'])
     # 更改类型
-    df["近1周"] = df["近1周"].astype("float")
     df["近1月"] = df["近1月"].astype("float")
     df["近3月"] = df["近3月"].astype("float")
     df["近6月"] = df["近6月"].astype("float")
