@@ -109,6 +109,8 @@ if __name__ == '__main__':
         logging.info("导入本地数据")
         with open(fileName, mode='r', encoding="utf-8") as  file:
             allData = file.readlines()
+            # 去除换行符
+            allData = [i.strip() for i in allData]
     else:
         logging.info("开始爬取数据")
         getFundData()
